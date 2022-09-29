@@ -3,6 +3,7 @@ package com.study.boardExample.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -19,6 +20,8 @@ public class Post {
     private PostType postType;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "members_id")
+    private Member member;
+
+    private LocalDate createDt;
 }

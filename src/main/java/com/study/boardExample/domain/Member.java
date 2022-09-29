@@ -3,15 +3,15 @@ package com.study.boardExample.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Data
-public class User {
+public class Member {
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     private String name;
@@ -19,9 +19,9 @@ public class User {
     private String gender;
     private String level;
     private String tel;
-    private Date createDt;
-    private Date lastLoginDt;
+    private LocalDate createDt;
+    private LocalDate lastLoginDt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Post> postList;
 }
