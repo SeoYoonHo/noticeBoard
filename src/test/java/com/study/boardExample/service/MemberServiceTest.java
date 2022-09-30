@@ -73,7 +73,7 @@ class MemberServiceTest {
     @Test
     void createMember() {
         //given
-        MemberDTO.MemberRequest memberDto = new MemberDTO.MemberRequest();
+        MemberDTO.CreateMemberRequest memberDto = new MemberDTO.CreateMemberRequest();
         memberDto.setName("SYH");
         memberDto.setAge(32);
         memberDto.setGender("male");
@@ -87,4 +87,42 @@ class MemberServiceTest {
         Member res = memberRepository.findById(id).orElseGet(null);
         assertNotNull(res);
     }
+
+    @Test
+    void updateMember() {
+        //given
+        MemberDTO.CreateMemberRequest memberCreateDto = new MemberDTO.CreateMemberRequest();
+        memberCreateDto.setName("SYH");
+        memberCreateDto.setAge(32);
+        memberCreateDto.setGender("male");
+        memberCreateDto.setLevel("high");
+        memberCreateDto.setTel("010-6330-2643");
+
+        Long id = memberService.createMember(memberCreateDto);
+        em.flush();
+
+        MemberDTO.UpdateMemberRequest memberUpdateDto = new MemberDTO.UpdateMemberRequest();
+        memberUpdateDto.setId(id);
+        memberUpdateDto.setName("SYHUpdate");
+        memberUpdateDto.setAge(500);
+        memberUpdateDto.setGender("female");
+        memberUpdateDto.setLevel("middle");
+        memberUpdateDto.setTel("010-6330-2655");
+
+
+        //when
+        memberService.updateMember(memberUpdateDto);
+        em.flush();
+
+        //then
+        Member res = memberRepository.findById(id).orElseGet(null);
+        assertNotNull(res);
+
+        assertEquals(memberUpdateDto.getName(), res.getName());
+        assertEquals(memberUpdateDto.getAge(), res.getAge());
+        assertEquals(memberUpdateDto.getGender(), res.getGender());
+        assertEquals(memberUpdateDto.getLevel(), res.getLevel());
+        assertEquals(memberUpdateDto.getTel(), res.getTel());
+    }
+
 }

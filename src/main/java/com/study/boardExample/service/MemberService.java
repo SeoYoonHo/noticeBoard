@@ -29,8 +29,14 @@ public class MemberService {
                          .map(MemberMapper.INSTANCE::memeberToMemberResponseDto).collect(Collectors.toList());
     }
 
-    public Long createMember(MemberDTO.MemberRequest requestDTO) {
-        Member member = userRepository.save(MemberMapper.INSTANCE.memberRquestDtoToMember(requestDTO));
+    public Long createMember(MemberDTO.CreateMemberRequest requestDTO) {
+        Member member = userRepository.save(MemberMapper.INSTANCE.memberCreateRquestDtoToMember(requestDTO));
         return member.getId();
     }
+
+    public Long updateMember(MemberDTO.UpdateMemberRequest requestDTO) {
+        Member member = userRepository.save(MemberMapper.INSTANCE.memberUpdateRquestDtoToMember(requestDTO));
+        return member.getId();
+    }
+
 }

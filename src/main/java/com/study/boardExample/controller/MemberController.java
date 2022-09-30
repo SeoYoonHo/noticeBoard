@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class BoardController {
+public class MemberController {
 
     private final MemberService memberService;
 
@@ -34,11 +34,19 @@ public class BoardController {
 
     @PostMapping("api/v1/create/member")
     public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> createMember(
-            @RequestBody MemberDTO.MemberRequest memberRequest) {
-        Long memberId = memberService.createMember(memberRequest);
+            @RequestBody MemberDTO.CreateMemberRequest createMemberRequest) {
+        Long memberId = memberService.createMember(createMemberRequest);
         HashMap<String, Long> resMap = new HashMap<>();
         resMap.put("memberId", memberId);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Create member success", resMap));
     }
 
+    @PostMapping("api/v1/update/member")
+    public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> updateMember(
+            @RequestBody MemberDTO.UpdateMemberRequest updateMemberRequest) {
+        Long memberId = memberService.updateMember(updateMemberRequest);
+        HashMap<String, Long> resMap = new HashMap<>();
+        resMap.put("memberId", memberId);
+        return ResponseEntity.ok(CommonResponse.DataResponse.of("003", "Update member success", resMap));
+    }
 }

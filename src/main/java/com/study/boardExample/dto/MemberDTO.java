@@ -22,7 +22,17 @@ public class MemberDTO {
     }
 
     @Data
-    public static class MemberRequest {
+    public static class CreateMemberRequest {
+        private String name;
+        private Integer age;
+        private String gender;
+        private String level;
+        private String tel;
+    }
+
+    @Data
+    public static class UpdateMemberRequest {
+        private Long id;
         private String name;
         private Integer age;
         private String gender;
