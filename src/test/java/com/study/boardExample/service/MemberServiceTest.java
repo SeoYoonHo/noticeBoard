@@ -3,6 +3,7 @@ package com.study.boardExample.service;
 import com.study.boardExample.domain.Member;
 import com.study.boardExample.dto.MemberDTO;
 import com.study.boardExample.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,28 @@ class MemberServiceTest {
     MemberService memberService;
     @Autowired
     MemberRepository memberRepository;
-
     @Autowired
     EntityManager em;
+
+    int beforeCnt;
+
+    @BeforeEach
+    void setUp() {
+        beforeCnt = memberService.findMemberByName("SYH").size();
+
+        for(int i = 0;i<10;i++) {
+            Member member = new Member();
+            member.setName("SYH");
+            member.setAge(32 + i);
+            member.setGender("male");
+            member.setLevel("high");
+            member.setCreateDt(LocalDate.now());
+            member.setLastLoginDt(LocalDate.now());
+
+            //when
+            memberRepository.save(member);
+        }
+    }
 
     @Test
     void findMemberById() {
@@ -46,5 +66,11 @@ class MemberServiceTest {
         //then
         MemberDTO.MemberResponse findMember = memberService.findMemberById(member.getId());
         assertEquals(member.getId(), findMember.getId());
+    }
+
+    @Test
+    void findMemberByName() {
+        //then
+        assertEquals(beforeCnt + 10, memberService.findMemberByName("SYH").size());
     }
 }

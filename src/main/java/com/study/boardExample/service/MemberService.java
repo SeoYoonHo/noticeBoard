@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -18,5 +21,11 @@ public class MemberService {
     public MemberDTO.MemberResponse findMemberById(Long id) {
         Member member = userRepository.findById(id).orElseThrow(() -> new NoSearchException("No search member"));
         return MemberMapper.INSTANCE.memeberToMemberResponseDto(member);
+    }
+
+    public List<MemberDTO.MemberResponse> findMemberByName(String name) {
+        List<Member> memberList = userRepository.findByName(name);
+        return memberList.stream()
+                         .map(MemberMapper.INSTANCE::memeberToMemberResponseDto).collect(Collectors.toList());
     }
 }

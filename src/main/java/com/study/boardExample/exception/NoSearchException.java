@@ -1,23 +1,14 @@
 package com.study.boardExample.exception;
 
+import java.io.Serial;
+
 public class NoSearchException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public NoSearchException() {
-		super();
-	}
-	
-	public NoSearchException(String message) {
-		super(message);
-	}
-	
-	public NoSearchException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
-	public NoSearchException(Throwable cause) {
-		super(cause);
-	}
-	
+    public NoSearchException(String message) {
+        super(message);
+    }
+
 }
