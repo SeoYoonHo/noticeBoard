@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -84,7 +83,7 @@ class MemberServiceTest {
         Long id = memberService.createMember(memberDto);
 
         //then
-        Member res = memberRepository.findById(id).orElseGet(null);
+        Member res = memberRepository.findById(id).orElse(null);
         assertNotNull(res);
     }
 
@@ -115,7 +114,7 @@ class MemberServiceTest {
         em.flush();
 
         //then
-        Member res = memberRepository.findById(id).orElseGet(null);
+        Member res = memberRepository.findById(id).orElse(null);
         assertNotNull(res);
 
         assertEquals(memberUpdateDto.getName(), res.getName());
@@ -125,4 +124,26 @@ class MemberServiceTest {
         assertEquals(memberUpdateDto.getTel(), res.getTel());
     }
 
+    @Test
+    void deleteMemberById() {
+        //given
+        MemberDTO.CreateMemberRequest memberDto = new MemberDTO.CreateMemberRequest();
+        memberDto.setName("SYH");
+        memberDto.setAge(32);
+        memberDto.setGender("male");
+        memberDto.setLevel("high");
+        memberDto.setTel("010-6330-2643");
+
+        Long id = memberService.createMember(memberDto);
+        em.flush();
+
+        //when
+        Member deleteBefore = memberRepository.findById(id).orElse(null);
+        memberService.deleteMemberById(id);
+        Member deleteAfter = memberRepository.findById(id).orElse(null);
+
+        //then
+        assertNotNull(deleteBefore);
+        assertNull(deleteAfter);
+    }
 }

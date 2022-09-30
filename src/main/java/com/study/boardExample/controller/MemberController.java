@@ -49,4 +49,11 @@ public class MemberController {
         resMap.put("memberId", memberId);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("003", "Update member success", resMap));
     }
+
+    @DeleteMapping("api/v1/delete/member/{id}")
+    public ResponseEntity<CommonResponse.NoDataResponse> deleteMemberById(
+            @PathVariable(value = "id") Long id) {
+        memberService.deleteMemberById(id);
+        return ResponseEntity.ok(CommonResponse.NoDataResponse.of("004", "Delete member success"));
+    }
 }
