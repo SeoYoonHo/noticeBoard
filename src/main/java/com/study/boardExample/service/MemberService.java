@@ -16,7 +16,6 @@ public class MemberService {
 
     public MemberDTO.MemberResponse findMemberById(Long id){
         Member member = userRepository.findById(id).get();
-        log.debug(member.toString());
         return MemberMapper.INSTANCE.memeberToMemberResponseDto(member);
     }
 }
