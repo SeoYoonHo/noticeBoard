@@ -9,7 +9,7 @@ import java.util.List;
 public class MemberDTO {
 
     @Data
-    public static class MemberResponse{
+    public static class MemberResponse {
         private Long id;
         private String name;
         private Integer age;
@@ -19,6 +19,15 @@ public class MemberDTO {
         private Date createDt;
         private Date lastLoginDt;
         private List<Post> postList;
+    }
+
+    @Data
+    public static class MemberRequest {
+        private String name;
+        private Integer age;
+        private String gender;
+        private String level;
+        private String tel;
     }
 
 }

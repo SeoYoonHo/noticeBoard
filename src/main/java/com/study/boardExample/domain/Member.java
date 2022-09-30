@@ -1,15 +1,16 @@
 package com.study.boardExample.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-public class Member {
+@EqualsAndHashCode(callSuper=false)
+public class Member extends BaseTimeEntity{
     @Id
     @GeneratedValue
     @Column(name = "member_id")
@@ -20,8 +21,6 @@ public class Member {
     private String gender;
     private String level;
     private String tel;
-    private LocalDate createDt;
-    private LocalDate lastLoginDt;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();

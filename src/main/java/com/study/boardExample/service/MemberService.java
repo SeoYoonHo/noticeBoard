@@ -28,4 +28,9 @@ public class MemberService {
         return memberList.stream()
                          .map(MemberMapper.INSTANCE::memeberToMemberResponseDto).collect(Collectors.toList());
     }
+
+    public Long createMember(MemberDTO.MemberRequest requestDTO) {
+        Member member = userRepository.save(MemberMapper.INSTANCE.memberRquestDtoToMember(requestDTO));
+        return member.getId();
+    }
 }

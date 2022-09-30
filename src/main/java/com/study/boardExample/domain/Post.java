@@ -1,13 +1,14 @@
 package com.study.boardExample.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Data
-public class Post {
+@EqualsAndHashCode(callSuper=false)
+public class Post extends BaseTimeEntity{
     @Id
     @GeneratedValue
     @Column(name = "post_id")
@@ -22,6 +23,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "members_id")
     private Member member;
-
-    private LocalDate createDt;
 }

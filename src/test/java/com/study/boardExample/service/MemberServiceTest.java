@@ -12,9 +12,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -34,14 +34,12 @@ class MemberServiceTest {
     void setUp() {
         beforeCnt = memberService.findMemberByName("SYH").size();
 
-        for(int i = 0;i<10;i++) {
+        for (int i = 0; i < 10; i++) {
             Member member = new Member();
             member.setName("SYH");
             member.setAge(32 + i);
             member.setGender("male");
             member.setLevel("high");
-            member.setCreateDt(LocalDate.now());
-            member.setLastLoginDt(LocalDate.now());
 
             //when
             memberRepository.save(member);
@@ -56,8 +54,6 @@ class MemberServiceTest {
         member.setAge(32);
         member.setGender("male");
         member.setLevel("high");
-        member.setCreateDt(LocalDate.now());
-        member.setLastLoginDt(LocalDate.now());
 
         //when
         memberRepository.save(member);
@@ -72,5 +68,23 @@ class MemberServiceTest {
     void findMemberByName() {
         //then
         assertEquals(beforeCnt + 10, memberService.findMemberByName("SYH").size());
+    }
+
+    @Test
+    void createMember() {
+        //given
+        MemberDTO.MemberRequest memberDto = new MemberDTO.MemberRequest();
+        memberDto.setName("SYH");
+        memberDto.setAge(32);
+        memberDto.setGender("male");
+        memberDto.setLevel("high");
+        memberDto.setTel("010-6330-2643");
+
+        //when
+        Long id = memberService.createMember(memberDto);
+
+        //then
+        Member res = memberRepository.findById(id).orElseGet(null);
+        assertNotNull(res);
     }
 }
