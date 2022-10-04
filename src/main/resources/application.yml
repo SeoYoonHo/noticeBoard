@@ -1,10 +1,12 @@
 spring:
+   jwt:
+      secret: validSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKey
+      refresh-secret: refreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKey
    datasource:
       url: jdbc:h2:tcp://localhost/~/Project/Study/jpashop
       username: sa
       paswword:
       driver-class-name: org.h2.Driver
-   
    jpa:
       hibernate:
          ddl-auto: create #애플리케이션 실행시 테이블을 지우고 다시 생성
@@ -17,4 +19,4 @@ logging:
    level:
       com.study.boardExample: debug
       org.hibernate.SQL: debug
-      org.hibernate.type: trace #쿼리 파라미터 찍어주는 설정 
+      org.hibernate.type: trace #쿼리 파라미터 찍어주는 설정

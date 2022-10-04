@@ -11,6 +11,7 @@ public class MemberDTO {
     @Data
     public static class MemberResponse {
         private Long id;
+        private String email;
         private String name;
         private Integer age;
         private String gender;
@@ -38,6 +39,12 @@ public class MemberDTO {
         private String gender;
         private String level;
         private String tel;
+    }
+
+    @Data
+    public static class LoginRequest {
+        private String email;
+        private String password;
     }
 
 }
