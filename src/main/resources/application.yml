@@ -14,7 +14,11 @@ spring:
          hibernate:
 #            show_sql: true --> sysout으로 찍는
             format_sql: true
-            
+      defer-datasource-initialization: true
+   sql:
+      init:
+         mode: always
+         data-locations: classpath:db/data.sql
 logging: 
    level:
       com.study.boardExample: debug

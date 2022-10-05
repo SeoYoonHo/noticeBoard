@@ -12,27 +12,28 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/member")
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("api/v1/search/member/{id}")
+    @GetMapping("/search/{id}")
     public ResponseEntity<CommonResponse.DataResponse<MemberDTO.MemberResponse>> getMemberById(
             @PathVariable(value = "id") Long id) {
         MemberDTO.MemberResponse memberResponses = memberService.findMemberById(id);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", memberResponses));
     }
 
-    @GetMapping("api/v1/search/member")
+    @GetMapping("/search")
     public ResponseEntity<CommonResponse.DataResponse<List<MemberDTO.MemberResponse>>> getMemberById(
             @RequestParam String name) {
         List<MemberDTO.MemberResponse> memberListResponses = memberService.findMemberByName(name);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", memberListResponses));
     }
 
-    @PostMapping("api/v1/create/member")
+    @PostMapping("/create")
     public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> createMember(
             @RequestBody MemberDTO.CreateMemberRequest createMemberRequest) {
         Long memberId = memberService.createMember(createMemberRequest);
@@ -41,7 +42,7 @@ public class MemberController {
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Create member success", resMap));
     }
 
-    @PostMapping("api/v1/update/member")
+    @PostMapping("/update")
     public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> updateMember(
             @RequestBody MemberDTO.UpdateMemberRequest updateMemberRequest) {
         Long memberId = memberService.updateMember(updateMemberRequest);
@@ -50,7 +51,7 @@ public class MemberController {
         return ResponseEntity.ok(CommonResponse.DataResponse.of("003", "Update member success", resMap));
     }
 
-    @DeleteMapping("api/v1/delete/member/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<CommonResponse.NoDataResponse> deleteMemberById(
             @PathVariable(value = "id") Long id) {
         memberService.deleteMemberById(id);
