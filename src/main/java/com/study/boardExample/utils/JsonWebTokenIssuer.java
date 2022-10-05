@@ -60,7 +60,6 @@ public class JsonWebTokenIssuer {
         Claims claims;
         Key key = Keys.hmacShaKeyFor(refreshSecretKey.getBytes());
         try {
-//            claims = Jwts.parser().setSigningKey(refreshSecretKeyBytes).parseClaimsJws(jsonWebToken).getBody();
             claims = Jwts.parserBuilder().setSigningKey(key).build()
                          .parseClaimsJws(jsonWebToken).getBody();
         } catch (UnsupportedJwtException | IllegalArgumentException unsupportedJwtException) {
