@@ -4,7 +4,7 @@ VALUES
     (now(),
      now(),
      32,
-     'ADMIN',
+     'ROLE_ADMIN',
      'gogoy2643@naver.com',
      'male',
      'high',

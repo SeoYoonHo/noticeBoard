@@ -1,17 +1,16 @@
 package com.study.boardExample.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+public class SecurityConfig {
 
     private final String ROLE_ADMIN = "ADMIN";
     private final String ROLE_NORMAL = "NORMAL";
@@ -31,14 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // REST API 방식이므로 CSRF 보안 토큰 생성 기능 종료
                 .csrf().disable()
@@ -61,5 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // JWT 토큰 인증 필터 설정
                 .and()
                 .apply(new JwtSecurityConfig(authenticationManagerBuilder.getOrBuild()));
+
+        return http.build();
     }
 }
