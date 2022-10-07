@@ -1,6 +1,7 @@
 package com.study.boardExample.dto;
 
 import com.study.boardExample.domain.Post;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
@@ -42,6 +43,7 @@ public class MemberDTO {
     }
 
     @Data
+    @AllArgsConstructor(staticName = "of")
     public static class LoginRequest {
         private String email;
         private String password;
