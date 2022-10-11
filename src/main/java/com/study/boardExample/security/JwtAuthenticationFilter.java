@@ -1,11 +1,8 @@
 package com.study.boardExample.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.boardExample.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,20 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = resolveToken(request);
 
-        ObjectMapper mapper = new ObjectMapper();
-
         if (StringUtils.hasText(jwt)) {
             try {
                 Authentication jwtAuthenticationToken = new JwtAuthenticationToken(jwt);
                 Authentication authentication = authenticationManager.authenticate(jwtAuthenticationToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (AuthenticationException authenticationException) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setCharacterEncoding("UTF-8");
-                CommonResponse.NoDataResponse obejct = CommonResponse.NoDataResponse.of("Unauthorized", authenticationException.getMessage());
-                mapper.writeValue(response.getWriter(), obejct);
-                SecurityContextHolder.clearContext();
+                log.error(authenticationException.getMessage());
             }
         }
 

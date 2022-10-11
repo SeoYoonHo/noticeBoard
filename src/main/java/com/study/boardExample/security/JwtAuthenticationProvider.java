@@ -40,7 +40,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Claims claims;
-//        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         Key key = Keys.hmacShaKeyFor(secretKeyByte);
 
         try {

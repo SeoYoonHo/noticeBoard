@@ -34,9 +34,9 @@ public class JsonWebTokenIssuer {
         this.refreshExpireMin = refreshExpireMin;
     }
 
-    private String createToken(String userName, String authority, String secretKey, int expireMin) {
+    private String createToken(String email, String authority, String secretKey, int expireMin) {
         Date now = new Date();
-        Claims claims = Jwts.claims().setSubject(userName);
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put(KEY_ROLES, Collections.singleton(authority));
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
@@ -48,12 +48,12 @@ public class JsonWebTokenIssuer {
                    .compact();
     }
 
-    public String createAccessToken(String userName, String authority) {
-        return createToken(userName, authority, secretKey, expireMin);
+    public String createAccessToken(String email, String authority) {
+        return createToken(email, authority, secretKey, expireMin);
     }
 
-    public String createRefreshToken(String userName, String authority) {
-        return createToken(userName, authority, refreshSecretKey, refreshExpireMin);
+    public String createRefreshToken(String email, String authority) {
+        return createToken(email, authority, refreshSecretKey, refreshExpireMin);
     }
 
     public Claims parseClaimsFromRefreshToken(String jsonWebToken) {

@@ -1,7 +1,7 @@
 spring:
    jwt:
-      secret: validSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKey
-      refresh-secret: refreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKey
+      secret: validSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKey
+      refresh-secret: refreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKey
       expire-min: 120
       refresh-expire-min: 1200
    datasource:
