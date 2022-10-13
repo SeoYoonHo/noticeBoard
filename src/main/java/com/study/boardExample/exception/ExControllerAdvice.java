@@ -21,14 +21,14 @@ public class ExControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler
+    @ExceptionHandler(AuthenticationException.class)
     public CommonResponse.NoDataResponse exHandle(AuthenticationException e) {
         log.error("[exceptionHandle] ex", e);
         return CommonResponse.NoDataResponse.of("Unauthorized", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler
+    @ExceptionHandler(MissingRequestHeaderException.class)
     public CommonResponse.NoDataResponse exHandle(MissingRequestHeaderException e) {
         log.error("[exceptionHandle] ex", e);
         return CommonResponse.NoDataResponse.of("Bad Request", e.getMessage());
