@@ -12,3 +12,12 @@ VALUES
      '{bcrypt}$2a$10$LDwzHdFsoeeo0CjXoYdmwelLK4CjdiMtGvPHDYPQ039JEx19L7C8e',
      '010-6330-2643'
     );
+
+insert into POST
+(CREATE_DATE, UPDATE_DATE, CONTENTS, CNT)
+VALUES
+    (now(),
+     now(),
+     'contents',
+     0
+    );

@@ -45,7 +45,7 @@ public class SecurityConfig {
                 // 요청 별 인증 필요 여부 혹은 권한 확인
                 .authorizeRequests()
                 // /auth 로 시작하는 모든 경로는 권한 확인 없이 수행 가능합니다.
-                .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/api/v1/auth/**","/h2-console/**").permitAll()
                 // 나머지는 인증 확인 및 역할 확인
                 .anyRequest()
                 .hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)

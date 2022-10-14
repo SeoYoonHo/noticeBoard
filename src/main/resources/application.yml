@@ -4,8 +4,12 @@ spring:
       refresh-secret: refreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKey
       expire-min: 120
       refresh-expire-min: 1200
+   h2:
+      console:
+         path: /h2-console
+         enabled: true
    datasource:
-      url: jdbc:h2:tcp://localhost/~/Project/Study/jpashop
+      url: jdbc:h2:mem:testdb
       username: sa
       paswword:
       driver-class-name: org.h2.Driver
