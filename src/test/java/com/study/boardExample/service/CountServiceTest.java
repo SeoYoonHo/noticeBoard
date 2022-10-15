@@ -23,13 +23,17 @@ class CountServiceTest {
     @Autowired
     PostService postService;
 
+    @Autowired
+    CountService countService;
+
     @Test
     public void givenMultiThread_whenGetPost_thenIncreateCnt() throws Exception {
         ExecutorService service = Executors.newFixedThreadPool(10);
         AtomicInteger successCount = new AtomicInteger();
+        int executeCnt = 100;
 
-        CountDownLatch latch = new CountDownLatch(10);
-        for (int i = 0; i < 10; i++) {
+        CountDownLatch latch = new CountDownLatch(executeCnt);
+        for (int i = 0; i < executeCnt; i++) {
             service.execute(() -> {
                 try {
                     postService.findPostMyId(1L);
@@ -44,6 +48,7 @@ class CountServiceTest {
 
         latch.await();
 
+        int remainCnt = countService.getCount(1L);
 
         assertThat(successCount.get(), equalTo(postService.findPostMyId(1L).getCnt()));
     }

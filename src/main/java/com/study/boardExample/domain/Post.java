@@ -1,11 +1,14 @@
 package com.study.boardExample.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class Post extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
