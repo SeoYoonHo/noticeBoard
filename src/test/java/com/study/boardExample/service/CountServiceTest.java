@@ -23,8 +23,8 @@ class CountServiceTest {
     @Autowired
     PostService postService;
 
-    @Autowired
-    CountService countService;
+//    @Autowired
+//    CountService countService;
 
     @Test
     public void givenMultiThread_whenGetPost_thenIncreateCnt() throws Exception {
@@ -48,7 +48,7 @@ class CountServiceTest {
 
         latch.await();
 
-        int remainCnt = countService.getCount(1L);
+//        int remainCnt = countService.getCount(1L);
 
         assertThat(successCount.get(), equalTo(postService.findPostMyId(1L).getCnt()));
     }
