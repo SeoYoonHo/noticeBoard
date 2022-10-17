@@ -8,6 +8,7 @@ public class PostDTO {
         private Long id;
         private String contents;
         private Integer cnt;
+        private String email;
     }
 
     @Data

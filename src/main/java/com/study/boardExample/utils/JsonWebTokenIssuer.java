@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Collections;
@@ -17,6 +18,7 @@ public class JsonWebTokenIssuer {
     private final int ONE_SECONDS = 1000;
     private final int ONE_MINUTE = 60 * ONE_SECONDS;
     private final String KEY_ROLES = "roles";
+    private final String GRANT_TYPE_BEARER = "Bearer";
 
     private final String secretKey;
     private final String refreshSecretKey;
@@ -56,7 +58,22 @@ public class JsonWebTokenIssuer {
         return createToken(email, authority, refreshSecretKey, refreshExpireMin);
     }
 
+    public String resolveToken(String bearerToken) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(GRANT_TYPE_BEARER)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
     public Claims parseClaimsFromRefreshToken(String jsonWebToken) {
+        return getClaims(jsonWebToken, refreshSecretKey);
+    }
+
+    public Claims parseClaimsFromAccessToken(String jsonWebToken) {
+        return getClaims(jsonWebToken, secretKey);
+    }
+
+    private Claims getClaims(String jsonWebToken, String refreshSecretKey) {
         Claims claims;
         Key key = Keys.hmacShaKeyFor(refreshSecretKey.getBytes());
         try {
@@ -71,6 +88,20 @@ public class JsonWebTokenIssuer {
         } catch (SignatureException signatureException) {
             throw new JwtInvalidException("signature key is different", signatureException);
         }
+        return claims;
+    }
+
+    public Claims parseClaimsFromBearerAccessToken(String bearerToken) {
+        String accessToken = resolveToken(bearerToken);
+        if (!StringUtils.hasText(accessToken)) {
+            throw new JwtInvalidException("invalid grant type");
+        }
+
+        Claims claims = parseClaimsFromAccessToken(accessToken);
+        if (claims == null) {
+            throw new JwtInvalidException("not exists claims in token");
+        }
+
         return claims;
     }
 }

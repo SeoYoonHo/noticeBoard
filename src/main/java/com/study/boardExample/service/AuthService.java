@@ -26,13 +26,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JsonWebTokenIssuer jwtIssuer;
 
-    private String resolveToken(String bearerToken) {
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(GRANT_TYPE_BEARER)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     private JsonWebTokenDto createJsonWebTokenDto(Member member) {
         String email = member.getEmail();
         String authority = member.getAuthority();
@@ -57,7 +50,7 @@ public class AuthService {
 
     public JsonWebTokenDto reissue(String bearerToken) {
 
-        String refreshToken = resolveToken(bearerToken);
+        String refreshToken = jwtIssuer.resolveToken(bearerToken);
         if (!StringUtils.hasText(refreshToken)) {
             throw new JwtInvalidException("invalid grant type");
         }

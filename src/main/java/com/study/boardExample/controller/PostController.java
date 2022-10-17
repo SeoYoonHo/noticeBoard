@@ -15,7 +15,7 @@ import java.util.HashMap;
 @Slf4j
 @RequiredArgsConstructor
 public class PostController {
-
+    private final String AUTHORIZATION_HEADER = "Authorization";
     private final PostService postService;
 
     @GetMapping("/search/{id}")
@@ -27,8 +27,9 @@ public class PostController {
 
     @PostMapping("create")
     public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> createPost(
+            @RequestHeader(AUTHORIZATION_HEADER) String bearerToken,
             @RequestBody PostDTO.CreatePostRequest createPostRequest) {
-        Long postId = postService.createNewPost(createPostRequest);
+        Long postId = postService.createNewPost(bearerToken, createPostRequest);
         HashMap<String, Long> resMap = new HashMap<>();
         resMap.put("postId", postId);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Create post success", resMap));

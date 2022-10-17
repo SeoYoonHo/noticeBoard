@@ -14,10 +14,11 @@ VALUES
     );
 
 insert into POST
-(CREATE_DATE, UPDATE_DATE, CONTENTS, CNT)
+(CREATE_DATE, UPDATE_DATE, CONTENTS, MEMBERS_ID, CNT)
 VALUES
     (now(),
      now(),
      'contents',
+     1,
      0
     );
