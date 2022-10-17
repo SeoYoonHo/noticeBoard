@@ -11,32 +11,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class PostService {
     private final PostRepository postRepository;
-    private final CountService countService;
     private final CountEventPublisher countEventPublisher;
 
     public PostDTO.PostResponse findPostMyId(Long id) {
-        Optional<Post> optionalPost = postRepository.findPostById_Locked_Pessimistic(id);
-        PostDTO.PostResponse response = optionalPost
-                .map(PostMapper.INSTANCE::postToPostResponseDto)
-                .orElseThrow(() -> new NoSearchException("No search post"));
-        Post incCntPost = optionalPost.map(post ->
-                                      {
-                                          post.setCnt(post.getCnt() + 1);
-                                          return post;
-                                      })
-                                      .orElseThrow(
-                                              () -> new NoSearchException("not search post"));
-        postRepository.save(incCntPost);
-//        countService.postCountIncrease(id);
-//        countEventPublisher.publish(id, response.getCnt());
+        PostDTO.PostResponse response = postRepository.findById(id)
+                                                      .map(PostMapper.INSTANCE::postToPostResponseDto)
+                                                      .orElseThrow(() -> new NoSearchException("No search post"));
+        countEventPublisher.publish(id);
         return response;
     }
 

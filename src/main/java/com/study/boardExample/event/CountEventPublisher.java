@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class CountEventPublisher {
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public void publish(final Long id, final int cnt){
-        CountEvent countEvent = new CountEvent(this, id, cnt);
+    public void publish(final Long id){
+        CountEvent countEvent = new CountEvent(this, id);
         applicationEventPublisher.publishEvent(countEvent);
     }
 }

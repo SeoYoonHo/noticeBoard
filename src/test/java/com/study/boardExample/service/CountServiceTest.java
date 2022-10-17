@@ -30,7 +30,7 @@ class CountServiceTest {
     public void givenMultiThread_whenGetPost_thenIncreateCnt() throws Exception {
         ExecutorService service = Executors.newFixedThreadPool(10);
         AtomicInteger successCount = new AtomicInteger();
-        int executeCnt = 100;
+        int executeCnt = 1000;
 
         CountDownLatch latch = new CountDownLatch(executeCnt);
         for (int i = 0; i < executeCnt; i++) {
@@ -47,6 +47,7 @@ class CountServiceTest {
         }
 
         latch.await();
+        Thread.sleep(5000);
 
 //        int remainCnt = countService.getCount(1L);
 
