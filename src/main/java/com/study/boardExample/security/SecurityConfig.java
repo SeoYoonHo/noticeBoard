@@ -44,22 +44,28 @@ public class SecurityConfig {
                 .csrf().disable()
                 // 요청 별 인증 필요 여부 혹은 권한 확인
                 .authorizeRequests()
-                // /auth 로 시작하는 모든 경로는 권한 확인 없이 수행 가능합니다.
-                .antMatchers("/api/v1/auth/**","/h2-console/**").permitAll()
+                // 경로별 권한설정
+                .antMatchers("/api/v1/auth/**", "/h2-console/**").permitAll()
+                .antMatchers("/api/v1/post/notice/create/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/api/v1/post/notice/update/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/api/v1/post/notice/delete/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/api/v1/post/notice/search/**").hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)
+                .antMatchers("/api/v1/post/notice/searchList/**").hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)
+                .antMatchers("/api/v1/post/admin/**").hasRole(ROLE_ADMIN)
                 // 나머지는 인증 확인 및 역할 확인
-                .anyRequest()
-                .hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)
+                .anyRequest().hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)
                 // h2-console 사용을 위한 설정
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(
+                .accessDeniedHandler(
                         (request, response, accessDeniedException) -> {
                             ObjectMapper mapper = new ObjectMapper();
 
                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                             response.setCharacterEncoding("UTF-8");
-                            CommonResponse.NoDataResponse obejct = CommonResponse.NoDataResponse.of("unauthorized", accessDeniedException.getMessage());
+                            CommonResponse.NoDataResponse obejct = CommonResponse.NoDataResponse.of("unauthorized",
+                                    accessDeniedException.getMessage());
                             mapper.writeValue(response.getWriter(), obejct);
                             SecurityContextHolder.clearContext();
                         })

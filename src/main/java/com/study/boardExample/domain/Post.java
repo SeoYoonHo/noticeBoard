@@ -2,7 +2,6 @@ package com.study.boardExample.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import javax.persistence.*;
 
@@ -20,8 +19,8 @@ public class Post extends BaseTimeEntity{
     private int cnt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_type_id")
-    private PostType postType;
+    @JoinColumn(name = "board_type_id")
+    private BoardType boardType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id")

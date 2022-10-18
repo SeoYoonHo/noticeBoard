@@ -25,9 +25,26 @@ public class PostController {
         return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
     }
 
-    @PostMapping("create")
+    @GetMapping("/{boardType}/search/{id}")
+    public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostById(
+            @PathVariable(value = "boardType") String boardType,
+            @PathVariable(value = "id") Long id) {
+        PostDTO.PostResponse postResponse = postService.findPostMyId(id);
+        return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
+    }
+
+    @GetMapping("/{boardType}/searchList")
+    public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostByType(
+            @PathVariable(value = "boardType") String boardType) {
+//        PostDTO.PostResponse postResponse = postService.findPostMyId(id);
+//        return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
+        return null;
+    }
+
+    @PostMapping("/{boardType}/create")
     public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> createPost(
             @RequestHeader(AUTHORIZATION_HEADER) String bearerToken,
+            @PathVariable(value = "boardType") String boardType,
             @RequestBody PostDTO.CreatePostRequest createPostRequest) {
         Long postId = postService.createNewPost(bearerToken, createPostRequest);
         HashMap<String, Long> resMap = new HashMap<>();

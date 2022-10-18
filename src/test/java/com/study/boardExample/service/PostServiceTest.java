@@ -3,7 +3,7 @@ package com.study.boardExample.service;
 import com.study.boardExample.domain.Member;
 import com.study.boardExample.domain.Post;
 import com.study.boardExample.dto.PostDTO;
-import com.study.boardExample.event.CountEventPublisher;
+import com.study.boardExample.exception.NoSearchException;
 import com.study.boardExample.mapper.PostMapper;
 import com.study.boardExample.repository.MemberRepository;
 import com.study.boardExample.repository.PostRepository;
@@ -20,16 +20,14 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
     @Mock
     PostRepository postRepository;
-    @Mock
-    CountEventPublisher countEventPublisher;
     @Mock
     JsonWebTokenIssuer jsonWebTokenIssuer;
     @Mock
@@ -55,16 +53,38 @@ class PostServiceTest {
         PostDTO.CreatePostRequest createPostRequest = new PostDTO.CreatePostRequest();
         createPostRequest.setContents("test!!!!");
 
+        Post createPost = PostMapper.INSTANCE.postCreateRequestDtoToPost(createPostRequest);
+        createPost.setMember(member);
+
         Post post = new Post();
         post.setId(1L);
 
         when(jsonWebTokenIssuer.parseClaimsFromBearerAccessToken(bearerToken)).thenReturn(claims);
         when(memberRepository.findMemberByEmail(claims.getSubject())).thenReturn(optionalMember);
-        when(postRepository.save(PostMapper.INSTANCE.postCreateRequestDtoToPost(createPostRequest))).thenReturn(post);
+        when(postRepository.save(createPost)).thenReturn(post);
 
         Long postId = postService.createNewPost(bearerToken, createPostRequest);
 
         assertThat(postId, is(notNullValue()));
+    }
+
+    @Test
+    public void givenInvalidEamilUser_whenCreatePost_thenThrowNoSearchException() {
+        String bearerToken = "bearerToken";
+        Claims claims = Jwts.claims().setSubject("gogoy2643@naver.com");
+        claims.put(KEY_ROLES, Collections.singleton("ROLD_ADMIN"));
+
+        PostDTO.CreatePostRequest createPostRequest = new PostDTO.CreatePostRequest();
+        createPostRequest.setContents("test!!!!");
+
+        when(jsonWebTokenIssuer.parseClaimsFromBearerAccessToken(bearerToken)).thenReturn(claims);
+        when(memberRepository.findMemberByEmail(claims.getSubject())).thenReturn(Optional.empty());
+
+        Throwable throwable = assertThrows(NoSearchException.class,
+                () -> postService.createNewPost(bearerToken, createPostRequest));
+
+        assertThat(throwable, isA(NoSearchException.class));
+        assertThat(throwable.getMessage(), equalTo("member email is not found"));
     }
 
 }

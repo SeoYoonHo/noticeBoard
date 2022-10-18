@@ -9,13 +9,13 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class PostType extends BaseTimeEntity{
+public class BoardType extends BaseTimeEntity{
     @Id
-    @GeneratedValue
-    @Column(name = "post_type_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_type_id")
     private Long id;
 
-    @OneToMany(mappedBy = "postType")
+    @OneToMany(mappedBy = "boardType", cascade = CascadeType.ALL)
     private List<Post> postList;
 
     private String typeName;
