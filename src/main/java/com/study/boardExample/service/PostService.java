@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,19 @@ public class PostService {
 
         countEventPublisher.publish(id);
         return response;
+    }
+
+    public PostDTO.PostResponse findPostByIdAndBoardType(Long id, String type) {
+        Optional<Post> optionalPost = postRepository.findByIdAndBoardTypeName(id, type);
+        PostDTO.PostResponse response = optionalPost.map(PostMapper.INSTANCE::postToPostResponseDto)
+                                                    .orElseThrow(() -> new NoSearchException("No search post"));
+
+        countEventPublisher.publish(id);
+        return response;
+    }
+
+    public List<PostDTO.PostResponse> findPostListByBoardType(String type) {
+        return null;
     }
 
     public Long createNewPost(String bearerToken, PostDTO.CreatePostRequest createPostRequest) {

@@ -18,5 +18,6 @@ public class BoardType extends BaseTimeEntity{
     @OneToMany(mappedBy = "boardType", cascade = CascadeType.ALL)
     private List<Post> postList;
 
+    @Column(unique = true)
     private String typeName;
 }
