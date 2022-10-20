@@ -5,6 +5,9 @@ import com.study.boardExample.dto.PostDTO;
 import com.study.boardExample.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +32,16 @@ public class PostController {
     public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostById(
             @PathVariable(value = "boardType") String boardType,
             @PathVariable(value = "id") Long id) {
-        PostDTO.PostResponse postResponse = postService.findPostMyId(id);
+        PostDTO.PostResponse postResponse = postService.findPostByIdAndBoardType(id, boardType);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
     }
 
     @GetMapping("/{boardType}/searchList")
-    public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostByType(
-            @PathVariable(value = "boardType") String boardType) {
-//        PostDTO.PostResponse postResponse = postService.findPostMyId(id);
-//        return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
-        return null;
+    public ResponseEntity<CommonResponse.DataResponse<Page<PostDTO.PostResponse>>> getPostByType(
+            @PathVariable(value = "boardType") String boardType,
+            @PageableDefault Pageable pageable) {
+        Page<PostDTO.PostResponse> postResponses = postService.findPostListByBoardType(boardType, pageable);
+        return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponses));
     }
 
     @PostMapping("/{boardType}/create")
