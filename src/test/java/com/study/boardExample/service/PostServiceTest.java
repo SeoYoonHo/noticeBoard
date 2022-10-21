@@ -3,6 +3,8 @@ package com.study.boardExample.service;
 import com.study.boardExample.domain.Member;
 import com.study.boardExample.domain.Post;
 import com.study.boardExample.dto.PostDTO;
+import com.study.boardExample.enums.BoardTypeEnums;
+import com.study.boardExample.exception.InvalidBoardTypeException;
 import com.study.boardExample.exception.NoSearchException;
 import com.study.boardExample.mapper.PostMapper;
 import com.study.boardExample.repository.MemberRepository;
@@ -15,6 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -85,6 +90,36 @@ class PostServiceTest {
 
         assertThat(throwable, isA(NoSearchException.class));
         assertThat(throwable.getMessage(), equalTo("member email is not found"));
+    }
+
+    @Test
+    public void givenInvalidBoardTypeString_whenFindPostByIdAndBoardType_thenInavalidBoardTypeException() {
+        Long paramId = 1L;
+        String invalidBoardType = "invalidBoardType";
+        Optional<Post> optionalPost = Optional.empty();
+
+        when(postRepository.findByIdAndBoardType(paramId, BoardTypeEnums.getBoardType(invalidBoardType))).thenReturn(optionalPost);
+
+        Throwable throwable = assertThrows(InvalidBoardTypeException.class,
+                () -> postService.findPostByIdAndBoardType(paramId, invalidBoardType));
+
+        assertThat(throwable, isA(InvalidBoardTypeException.class));
+        assertThat(throwable.getMessage(), equalTo("Invalid Board Type!"));
+    }
+
+    @Test
+    public void givenInvalidBoardTypeString_whenFindPostListByBoardType_thenInavalidBoardTypeException() {
+        String invalidBoardType = "invalidBoardType";
+        Pageable pageable = PageRequest.of(1, 10);
+        Page<Post> postResponses = Page.empty();
+
+        when(postRepository.findAllByBoardType(BoardTypeEnums.getBoardType(invalidBoardType),pageable)).thenReturn(postResponses);
+
+        Throwable throwable = assertThrows(InvalidBoardTypeException.class,
+                () -> postService.findPostListByBoardType(invalidBoardType, pageable));
+
+        assertThat(throwable, isA(InvalidBoardTypeException.class));
+        assertThat(throwable.getMessage(), equalTo("Invalid Board Type!"));
     }
 
 }

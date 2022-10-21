@@ -1,6 +1,7 @@
 package com.study.boardExample.repository;
 
 import com.study.boardExample.domain.Post;
+import com.study.boardExample.enums.BoardTypeEnums;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,7 +21,7 @@ class PostRepositoryTest {
 
     @Test
     public void givenPostIdAndBoardTypeName_whenFindByIdAndBoardTypeName_thenReturnPostEntity() {
-        Optional<Post> optionalPost = postRepository.findByIdAndBoardTypeName(1L, "notice");
+        Optional<Post> optionalPost = postRepository.findByIdAndBoardType(1L, BoardTypeEnums.valueOf("notice"));
         Post post = optionalPost.orElse(null);
 
         assertThat(post, notNullValue());
@@ -30,8 +31,8 @@ class PostRepositoryTest {
 
     @Test
     public void givenBoardTypeName_whenfindAllByTypeName_thenReturnBoardType() {
-        Pageable pageable = PageRequest.of(1, 10);
-        Page<Post> boardTypes = postRepository.findAllByBoardTypeName("notice", pageable);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Post> boardTypes = postRepository.findAllByBoardType(BoardTypeEnums.valueOf("notice"), pageable);
 
         assertThat(boardTypes, notNullValue());
         assertThat(boardTypes.getSize(), lessThanOrEqualTo(10));

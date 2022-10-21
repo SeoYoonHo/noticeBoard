@@ -21,13 +21,6 @@ public class PostController {
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final PostService postService;
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostById(
-            @PathVariable(value = "id") Long id) {
-        PostDTO.PostResponse postResponse = postService.findPostMyId(id);
-        return ResponseEntity.ok(CommonResponse.DataResponse.of("001", "Success", postResponse));
-    }
-
     @GetMapping("/{boardType}/search/{id}")
     public ResponseEntity<CommonResponse.DataResponse<PostDTO.PostResponse>> getPostById(
             @PathVariable(value = "boardType") String boardType,

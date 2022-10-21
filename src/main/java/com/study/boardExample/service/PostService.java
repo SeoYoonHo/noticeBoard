@@ -3,6 +3,7 @@ package com.study.boardExample.service;
 import com.study.boardExample.domain.Member;
 import com.study.boardExample.domain.Post;
 import com.study.boardExample.dto.PostDTO;
+import com.study.boardExample.enums.BoardTypeEnums;
 import com.study.boardExample.event.CountEventPublisher;
 import com.study.boardExample.exception.NoSearchException;
 import com.study.boardExample.mapper.PostMapper;
@@ -29,17 +30,8 @@ public class PostService {
     private final JsonWebTokenIssuer jsonWebTokenIssuer;
     private final MemberRepository memberRepository;
 
-    public PostDTO.PostResponse findPostMyId(Long id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        PostDTO.PostResponse response = optionalPost.map(PostMapper.INSTANCE::postToPostResponseDto)
-                                                    .orElseThrow(() -> new NoSearchException("No search post"));
-
-        countEventPublisher.publish(id);
-        return response;
-    }
-
     public PostDTO.PostResponse findPostByIdAndBoardType(Long id, String type) {
-        Optional<Post> optionalPost = postRepository.findByIdAndBoardTypeName(id, type);
+        Optional<Post> optionalPost = postRepository.findByIdAndBoardType(id, BoardTypeEnums.getBoardType(type));
         PostDTO.PostResponse response = optionalPost.map(PostMapper.INSTANCE::postToPostResponseDto)
                                                     .orElseThrow(() -> new NoSearchException("No search post"));
 
@@ -48,7 +40,7 @@ public class PostService {
     }
 
     public Page<PostDTO.PostResponse> findPostListByBoardType(String type, Pageable pageable) {
-        return postRepository.findAllByBoardTypeName(type, pageable).map(PostMapper.INSTANCE::postToPostResponseDto);
+        return postRepository.findAllByBoardType(BoardTypeEnums.getBoardType(type), pageable).map(PostMapper.INSTANCE::postToPostResponseDto);
     }
 
     public Long createNewPost(String bearerToken, PostDTO.CreatePostRequest createPostRequest) {

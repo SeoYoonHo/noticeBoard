@@ -1,5 +1,6 @@
 package com.study.boardExample.domain;
 
+import com.study.boardExample.enums.BoardTypeEnums;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,9 +19,12 @@ public class Post extends BaseTimeEntity{
 
     private int cnt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_type_id")
-    private BoardType boardType;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "board_type_id")
+//    private BoardType boardType;
+
+    @Enumerated(EnumType.STRING)
+    private BoardTypeEnums boardType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id")
