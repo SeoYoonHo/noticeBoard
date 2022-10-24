@@ -1,6 +1,8 @@
-package com.study.boardExample.security;
+package com.study.boardExample.repository.security;
 
 import com.study.boardExample.exception.JwtInvalidException;
+import com.study.boardExample.security.JwtAuthenticationProvider;
+import com.study.boardExample.security.JwtAuthenticationToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

@@ -48,4 +48,15 @@ public class PostController {
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Create post success", resMap));
     }
 
+    @PostMapping("/{boardType}/update/{id}")
+    public ResponseEntity<CommonResponse.DataResponse<HashMap<String, Long>>> updatePost(
+            @RequestHeader(AUTHORIZATION_HEADER) String bearerToken,
+            @PathVariable(value = "boardType") String boardType,
+            @RequestBody PostDTO.UpdatePostRequest updatePostRequest) {
+        Long postId = postService.updatePost(bearerToken, boardType, updatePostRequest);
+        HashMap<String, Long> resMap = new HashMap<>();
+        resMap.put("postId", postId);
+        return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Update post success", resMap));
+    }
+
 }

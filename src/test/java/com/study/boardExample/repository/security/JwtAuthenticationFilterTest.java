@@ -1,6 +1,8 @@
-package com.study.boardExample.security;
+package com.study.boardExample.repository.security;
 
 import com.study.boardExample.exception.JwtInvalidException;
+import com.study.boardExample.security.JwtAuthenticationFilter;
+import com.study.boardExample.security.JwtAuthenticationToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
