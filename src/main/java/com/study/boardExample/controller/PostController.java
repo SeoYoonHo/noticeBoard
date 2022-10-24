@@ -59,4 +59,13 @@ public class PostController {
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Update post success", resMap));
     }
 
+    @PostMapping("/{boardType}/delete/{id}")
+    public ResponseEntity<CommonResponse.NoDataResponse> deletePost(
+            @RequestHeader(AUTHORIZATION_HEADER) String bearerToken,
+            @PathVariable(value = "boardType") String boardType,
+            @RequestBody PostDTO.DeletePostRequest deletePostRequest) {
+        postService.deletePost(bearerToken, boardType, deletePostRequest);
+        return ResponseEntity.ok(CommonResponse.NoDataResponse.of("002", "Delete post success"));
+    }
+
 }
