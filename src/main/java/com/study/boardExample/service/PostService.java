@@ -6,6 +6,7 @@ import com.study.boardExample.dto.PostDTO;
 import com.study.boardExample.enums.BoardTypeEnums;
 import com.study.boardExample.event.CountEventPublisher;
 import com.study.boardExample.exception.NoSearchException;
+import com.study.boardExample.exception.NotMatchException;
 import com.study.boardExample.mapper.PostMapper;
 import com.study.boardExample.repository.MemberRepository;
 import com.study.boardExample.repository.PostRepository;
@@ -30,8 +31,8 @@ public class PostService {
     private final JsonWebTokenIssuer jsonWebTokenIssuer;
     private final MemberRepository memberRepository;
 
-    public PostDTO.PostResponse findPostByIdAndBoardType(Long id, String type) {
-        Optional<Post> optionalPost = postRepository.findByIdAndBoardType(id, BoardTypeEnums.getBoardType(type));
+    public PostDTO.PostResponse findPostByIdAndBoardType(Long id, String boardType) {
+        Optional<Post> optionalPost = postRepository.findByIdAndBoardType(id, BoardTypeEnums.getBoardType(boardType));
         PostDTO.PostResponse response = optionalPost.map(PostMapper.INSTANCE::postToPostResponseDto)
                                                     .orElseThrow(() -> new NoSearchException("No search post"));
 
@@ -39,11 +40,12 @@ public class PostService {
         return response;
     }
 
-    public Page<PostDTO.PostResponse> findPostListByBoardType(String type, Pageable pageable) {
-        return postRepository.findAllByBoardType(BoardTypeEnums.getBoardType(type), pageable).map(PostMapper.INSTANCE::postToPostResponseDto);
+    public Page<PostDTO.PostResponse> findPostListByBoardType(String boardType, Pageable pageable) {
+        return postRepository.findAllByBoardType(BoardTypeEnums.getBoardType(boardType), pageable)
+                             .map(PostMapper.INSTANCE::postToPostResponseDto);
     }
 
-    public Long createNewPost(String bearerToken, PostDTO.CreatePostRequest createPostRequest) {
+    public Long createNewPost(String bearerToken, String boardType, PostDTO.CreatePostRequest createPostRequest) {
         Claims claims = jsonWebTokenIssuer.parseClaimsFromBearerAccessToken(bearerToken);
 
         Member member = memberRepository.findMemberByEmail(claims.getSubject())
@@ -51,9 +53,24 @@ public class PostService {
 
         Post createPost = PostMapper.INSTANCE.postCreateRequestDtoToPost(createPostRequest);
         createPost.setMember(member);
+        createPost.setBoardType(BoardTypeEnums.getBoardType(boardType));
         Post post = postRepository.save(createPost);
 
         return post.getId();
+    }
+
+    public Long updatePost(String bearerToken, String boardType, PostDTO.UpdatePostRequest updatePostRequest) {
+        Claims claims = jsonWebTokenIssuer.parseClaimsFromBearerAccessToken(bearerToken);
+
+        Post updatePost = postRepository.findByIdAndBoardType(updatePostRequest.getId(),
+                BoardTypeEnums.getBoardType(boardType)).orElseThrow(() -> new NoSearchException("No search post"));
+        updatePost.setContents(updatePostRequest.getContents());
+
+        if(!claims.getSubject().equals(updatePost.getMember().getEmail())){
+            throw new NotMatchException("Not Match Post Owner!");
+        }
+
+        return updatePost.getId();
     }
 
 }

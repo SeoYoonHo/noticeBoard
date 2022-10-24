@@ -19,10 +19,6 @@ public class Post extends BaseTimeEntity{
 
     private int cnt;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "board_type_id")
-//    private BoardType boardType;
-
     @Enumerated(EnumType.STRING)
     private BoardTypeEnums boardType;
 

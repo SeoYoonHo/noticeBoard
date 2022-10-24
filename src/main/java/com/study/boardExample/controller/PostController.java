@@ -42,7 +42,7 @@ public class PostController {
             @RequestHeader(AUTHORIZATION_HEADER) String bearerToken,
             @PathVariable(value = "boardType") String boardType,
             @RequestBody PostDTO.CreatePostRequest createPostRequest) {
-        Long postId = postService.createNewPost(bearerToken, createPostRequest);
+        Long postId = postService.createNewPost(bearerToken, boardType, createPostRequest);
         HashMap<String, Long> resMap = new HashMap<>();
         resMap.put("postId", postId);
         return ResponseEntity.ok(CommonResponse.DataResponse.of("002", "Create post success", resMap));

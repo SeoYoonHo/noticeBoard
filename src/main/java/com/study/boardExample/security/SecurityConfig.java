@@ -15,6 +15,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Configuration
 @Slf4j
 public class SecurityConfig {
@@ -24,10 +28,8 @@ public class SecurityConfig {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public SecurityConfig(
-            AuthenticationManagerBuilder authenticationManagerBuilder,
-            JwtAuthenticationProvider jsonWebTokenProvider
-    ) {
+    public SecurityConfig(AuthenticationManagerBuilder authenticationManagerBuilder,
+                          JwtAuthenticationProvider jsonWebTokenProvider) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.authenticationManagerBuilder.authenticationProvider(jsonWebTokenProvider);
     }
@@ -55,32 +57,25 @@ public class SecurityConfig {
                 // 나머지는 인증 확인 및 역할 확인
                 .anyRequest().hasAnyRole(ROLE_ADMIN, ROLE_NORMAL)
                 // h2-console 사용을 위한 설정
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(
-                        (request, response, accessDeniedException) -> {
-                            ObjectMapper mapper = new ObjectMapper();
-
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.setCharacterEncoding("UTF-8");
-                            CommonResponse.NoDataResponse obejct = CommonResponse.NoDataResponse.of("unauthorized",
-                                    accessDeniedException.getMessage());
-                            mapper.writeValue(response.getWriter(), obejct);
-                            SecurityContextHolder.clearContext();
-                        })
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
+                .and().exceptionHandling().accessDeniedHandler(this::exceptionHandler)
+                .authenticationEntryPoint(this::exceptionHandler).and().headers().frameOptions().sameOrigin()
                 // 세션을 사용하지 않도록 변경
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // JWT 토큰 인증 필터 설정
-                .and()
-                .apply(new JwtSecurityConfig(authenticationManagerBuilder.getOrBuild()));
+                .and().apply(new JwtSecurityConfig(authenticationManagerBuilder.getOrBuild()));
 
         return http.build();
+    }
+
+    private void exceptionHandler(HttpServletRequest request, HttpServletResponse response,
+                                  Exception e) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        CommonResponse.NoDataResponse obejct = CommonResponse.NoDataResponse.of("unauthorized", e.getMessage());
+        mapper.writeValue(response.getWriter(), obejct);
+        SecurityContextHolder.clearContext();
     }
 }
