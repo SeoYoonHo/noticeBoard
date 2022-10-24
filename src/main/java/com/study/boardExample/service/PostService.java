@@ -66,11 +66,24 @@ public class PostService {
                 BoardTypeEnums.getBoardType(boardType)).orElseThrow(() -> new NoSearchException("No search post"));
         updatePost.setContents(updatePostRequest.getContents());
 
-        if(!claims.getSubject().equals(updatePost.getMember().getEmail())){
+        if (!claims.getSubject().equals(updatePost.getMember().getEmail())) {
             throw new NotMatchException("Not Match Post Owner!");
         }
 
         return updatePost.getId();
     }
 
+    public void deletePost(String bearerToken, String boardType, PostDTO.DeletePostRequest deletePostRequest) {
+        Claims claims = jsonWebTokenIssuer.parseClaimsFromBearerAccessToken(bearerToken);
+
+        Post deletePost = postRepository.findByIdAndBoardType(deletePostRequest.getId(),
+                BoardTypeEnums.getBoardType(boardType)).orElseThrow(() -> new NoSearchException("No search post"));
+
+
+        if (!claims.getSubject().equals(deletePost.getMember().getEmail())) {
+            throw new NotMatchException("Not Match Post Owner!");
+        }
+
+        postRepository.delete(deletePost);
+    }
 }

@@ -10,13 +10,20 @@ public class PostDTO {
         private Integer cnt;
         private String email;
     }
+
     @Data
     public static class CreatePostRequest {
         private String contents;
     }
+
     @Data
     public static class UpdatePostRequest {
         private Long id;
         private String contents;
+    }
+
+    @Data
+    public static class DeletePostRequest {
+        private Long id;
     }
 }
