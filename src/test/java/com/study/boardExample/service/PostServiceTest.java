@@ -138,8 +138,6 @@ class PostServiceTest {
         assertThat(throwable.getMessage(), equalTo("Invalid Board Type!!"));
     }
 
-
-
     @Test
     public void givenNotOwnerUser_whenUpdatePost_thenThrowNotMatchException() {
         String bearerToken = "bearerToken";
@@ -206,8 +204,6 @@ class PostServiceTest {
         assertThat(throwable, isA(InvalidBoardTypeException.class));
         assertThat(throwable.getMessage(), equalTo("Invalid Board Type!!"));
     }
-
-
 
     @Test
     public void givenNotOwnerUser_whenDeletePost_thenThrowNotMatchException() {

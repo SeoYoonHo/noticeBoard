@@ -1,7 +1,5 @@
 package com.study.boardExample.event;
 
-import com.study.boardExample.domain.Post;
-import com.study.boardExample.exception.NoSearchException;
 import com.study.boardExample.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +30,8 @@ public class CountEvenetListener {
         int count = postCountHashMap.get(postId).incrementAndGet();
         if (count % 10 == 0) {
             postCountHashMap.get(postId).updateAndGet(n -> n - count);
-            Post lockPost = postRepository.findPostById_Locked_Pessimistic(postId)
-                                          .map(post ->
-                                          {
-                                              post.setCnt(post.getCnt() + count);
-                                              return post;
-                                          })
-                                          .orElseThrow(
-                                                  () -> new NoSearchException("not search post"));
+            postRepository.increasCountParam(postId, count);
             log.debug("count : " + count);
-            log.debug("lock Post :" + lockPost.toString());
         }
     }
 }

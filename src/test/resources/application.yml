@@ -1,0 +1,31 @@
+spring:
+   jwt:
+      secret: validSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKeyvalidSecretKey
+      refresh-secret: refreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKeyrefreshSecretKey
+      expire-min: 120
+      refresh-expire-min: 1200
+   h2:
+      console:
+         path: /h2-console
+         enabled: true
+   datasource:
+      url: jdbc:h2:mem:testdb
+      username: sa
+      paswword:
+      driver-class-name: org.h2.Driver
+   jpa:
+      hibernate:
+         ddl-auto: create #애플리케이션 실행시 테이블을 지우고 다시 생성
+      properties:
+         hibernate:
+#            show_sql: true --> sysout으로 찍는
+            format_sql: true
+      defer-datasource-initialization: true
+   sql:
+      init:
+         mode: always
+         data-locations: classpath:db/data.sql
+logging: 
+   level:
+      com.study.boardExample: error
+      org.hibernate.SQL: error
