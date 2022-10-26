@@ -110,6 +110,7 @@ class AuthServiceTest {
 
     @Test
     public void givenNullClaims_whenReissue_thenThrowJwtInvalidException() {
+        when(jsonWebTokenIssuer.resolveToken("Bearer refreshToken")).thenReturn("refreshToken");
         when(jsonWebTokenIssuer.parseClaimsFromRefreshToken("refreshToken")).thenReturn(null);
 
         Throwable throwable = assertThrows(JwtInvalidException.class, () -> authService.reissue("Bearer refreshToken"));
@@ -129,6 +130,7 @@ class AuthServiceTest {
         claims.put("roles", Collections.singleton("ROLD_ADMIN"));
 
         when(memberRepository.findMemberByEmail("seoyoonho")).thenReturn(Optional.of(member));
+        when(jsonWebTokenIssuer.resolveToken("Bearer refreshToken")).thenReturn("refreshToken");
         when(jsonWebTokenIssuer.parseClaimsFromRefreshToken("refreshToken")).thenReturn(claims);
         when(jsonWebTokenIssuer.createAccessToken("seoyoonho", "ROLE_ADMIN")).thenReturn("accessToken");
         when(jsonWebTokenIssuer.createRefreshToken("seoyoonho", "ROLE_ADMIN")).thenReturn("refreshToken");

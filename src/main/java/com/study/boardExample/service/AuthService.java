@@ -49,7 +49,6 @@ public class AuthService {
     }
 
     public JsonWebTokenDto reissue(String bearerToken) {
-
         String refreshToken = jwtIssuer.resolveToken(bearerToken);
         if (!StringUtils.hasText(refreshToken)) {
             throw new JwtInvalidException("invalid grant type");

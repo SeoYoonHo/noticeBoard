@@ -3,7 +3,7 @@ insert into MEMBER
 VALUES (now(),
         now(),
         32,
-        'ROLE_NORMAL',
+        'ROLE_ADMIN',
         'gogoy2643@naver.com',
         'male',
         'high',
