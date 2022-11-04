@@ -26,10 +26,9 @@
 - Git, Java 는 설치되어 있다고 가정한다.
 
 ```
-$ git clone https://github.com/CODEMCD/kakaopay-task3.git
-$ cd kakaopay-task3
+$ git clone https://github.com/SeoYoonHo/noticeBoard.git
 $ ./gradlew clean build
-$ java -jar build/libs/kakaopay-task3-0.0.1-SNAPSHOT.jar
+$ java -jar build/libs/boardExample-0.0.1-SNAPSHOT.jar
 ```
 
 - 접속 Base URI: `http://localhost:8080`
