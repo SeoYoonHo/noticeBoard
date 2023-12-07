@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
+    id 'com.google.cloud.tools.jib' version '3.2.0'
 }
 
 group = 'com.study'
@@ -39,6 +40,19 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
     testImplementation 'org.mockito:mockito-inline:4.8.0'
 
+}
+
+jib {
+    from {
+        image = "openjdk:17-alpine"
+    }
+    to {
+        image = "seoyoonho/notice-board"
+        tags = ["latest"]
+    }
+    container {
+        jvmFlags = ["-Xms512m", "-Xmx512m"]
+    }
 }
 
 tasks.named('test') {
