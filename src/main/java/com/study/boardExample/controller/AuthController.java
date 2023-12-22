@@ -6,6 +6,7 @@ import com.study.boardExample.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
@@ -17,9 +18,19 @@ public class AuthController {
 
     private final AuthService authService;
 
+    private final RestTemplate restTemplate;
+
     @PostMapping("/login")
     public JsonWebTokenDto login(@RequestBody MemberDTO.LoginRequest memberDto) {
+        String URL = "http://localhost:9090/api/v1/auth/test";
+        restTemplate.getForObject(URL, String.class);
         return authService.login(memberDto);
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        log.info("test!!!!!!!!!");
+        return null;
     }
 
     @PostMapping("/reissue")
