@@ -27,6 +27,17 @@ spring:
       init:
          mode: always
          data-locations: classpath:db/data.sql
+
+springdoc:
+   packages-to-scan: com.study.boardExample.controller
+   default-consumes-media-type: application/json;charset=UTF-8
+   default-produces-media-type: application/json;charset=UTF-8
+   swagger-ui:
+      path: /swagger-ui.html
+      disable-swagger-default-url: true
+      display-request-duration: true
+      operations-sorter: alpha
+
 logging: 
    level:
       com.study.boardExample: debug

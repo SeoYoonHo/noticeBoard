@@ -1,4 +1,4 @@
-package com.study.boardExample.sleuthTest;
+package com.study.boardExample.config;
 
 import brave.internal.codec.HexCodec;
 import brave.internal.propagation.StringPropagationAdapter;

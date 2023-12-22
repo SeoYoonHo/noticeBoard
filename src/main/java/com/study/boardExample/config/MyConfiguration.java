@@ -1,4 +1,4 @@
-package com.study.boardExample.sleuthTest;
+package com.study.boardExample.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
