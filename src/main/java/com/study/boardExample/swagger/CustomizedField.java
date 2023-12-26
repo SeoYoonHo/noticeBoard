@@ -7,10 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface SpringdocCustomProperty {
-    String name() default "";
-    String description() default "";
-    String type() default "";
-    boolean required() default false;
-    // 필요한 다른 속성들을 추가할 수 있습니다.
+public @interface CustomizedField {
+    String customField() default "customized field";
 }
