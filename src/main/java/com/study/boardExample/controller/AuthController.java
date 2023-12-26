@@ -3,8 +3,12 @@ package com.study.boardExample.controller;
 import com.study.boardExample.dto.JsonWebTokenDto;
 import com.study.boardExample.dto.MemberDTO;
 import com.study.boardExample.service.AuthService;
+import com.study.boardExample.swagger.CustomizedOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +35,13 @@ public class AuthController {
         return authService.login(memberDto);
     }
 
-    @Operation(summary = "문자열 반복", description = "파라미터로 받은 문자열을 2번 반복합니다.")
+    @Operation(summary = "문자열 반복", description = "파라미터로 받은 문자열을 2번 반복합니다.", extensions = {
+            @Extension(name = "x-custom-field", properties = {
+                    @ExtensionProperty(name = "key1", value = "value1"),
+                    @ExtensionProperty(name = "key2", value = "value2"),
+            })
+    })
+    @CustomizedOperation(addtion = "ddddd", position = "1", length = "2")
 //    @Parameter(name = "str", description = "2번 반복할 문자열")
     @GetMapping("/test")
     public String test(){

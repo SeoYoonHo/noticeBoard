@@ -47,7 +47,7 @@ public class SecurityConfig {
                 // 요청 별 인증 필요 여부 혹은 권한 확인
                 .authorizeRequests()
                 // 경로별 권한설정
-                .antMatchers("/api/v1/auth/**", "/h2-console/**", "/swagger-ui/**").permitAll()
+                .antMatchers("/api/v1/auth/**", "/h2-console/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/v1/post/notice/create/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/api/v1/post/notice/update/**").hasRole(ROLE_ADMIN)
                 .antMatchers("/api/v1/post/notice/delete/**").hasRole(ROLE_ADMIN)

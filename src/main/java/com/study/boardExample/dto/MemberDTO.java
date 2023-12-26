@@ -1,6 +1,7 @@
 package com.study.boardExample.dto;
 
 import com.study.boardExample.domain.Post;
+import com.study.boardExample.swagger.SpringdocCustomProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -45,6 +46,7 @@ public class MemberDTO {
     @Data
     @AllArgsConstructor(staticName = "of")
     public static class LoginRequest {
+        @SpringdocCustomProperty(description = "dddd")
         private String email;
         private String password;
     }
