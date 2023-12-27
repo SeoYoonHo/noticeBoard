@@ -1,7 +1,9 @@
 package com.study.boardExample.dto;
 
 import com.study.boardExample.domain.Post;
-import com.study.boardExample.swagger.CustomizedField;
+import com.study.boardExample.shinhan.qryfile.QryFileFieldAnnotation;
+import com.study.boardExample.shinhan.qryfile.QryFileMethodAnnotation;
+import com.study.boardExample.shinhan.swagger.CustomizedField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -47,6 +49,7 @@ public class MemberDTO {
     @AllArgsConstructor(staticName = "of")
     public static class LoginRequest {
         @CustomizedField(customField = "sadgadg")
+        @QryFileFieldAnnotation(qryFileCustomField = "qryFile custom field!!!")
         private String email;
         @CustomizedField(customField = "hrehwrt")
         private String password;

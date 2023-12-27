@@ -1,4 +1,4 @@
-package com.study.boardExample.swagger;
+package com.study.boardExample.shinhan.swagger;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,4 +1,4 @@
-package com.study.boardExample.swagger;
+package com.study.boardExample.shinhan.swagger;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.oas.models.Operation;
@@ -36,18 +36,17 @@ public class SwaggerCustomizer implements OperationCustomizer, PropertyCustomize
             return property;
         }
 
-        CustomizedField annotation =
-                Arrays.stream(ctxAnnotations)
-                      .filter(annotation1 -> annotation1.annotationType()
-                                                        .equals(CustomizedField.class))
-                      .findFirst()
-                      .map(annotation1 -> (CustomizedField) annotation1)
-                      .orElse(null);
+        CustomizedField annotation = Arrays.stream(ctxAnnotations)
+                                           .filter(annotation1 -> annotation1.annotationType()
+                                                                             .equals(CustomizedField.class))
+                                           .findFirst()
+                                           .map(annotation1 -> (CustomizedField) annotation1)
+                                           .orElse(null);
 
         if (annotation != null) {
             property.addExtension("x-customField", annotation.customField());
-            System.out.println(property);
-            System.out.println(property.getExtensions());
+//            System.out.println(property);
+//            System.out.println(property.getExtensions());
         }
         return property;
     }

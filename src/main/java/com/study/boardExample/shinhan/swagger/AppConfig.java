@@ -1,4 +1,4 @@
-package com.study.boardExample.swagger;
+package com.study.boardExample.shinhan.swagger;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
