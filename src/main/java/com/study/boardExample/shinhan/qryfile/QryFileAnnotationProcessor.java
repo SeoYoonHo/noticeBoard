@@ -41,8 +41,8 @@ public class QryFileAnnotationProcessor {
                     for (Class paramClass : paramClasses) {
                         Field[] fields = paramClass.getDeclaredFields();
                         for (Field field : fields) {
-                            QryFileInputFieldAnnotation qryFileInputFieldAnnotation = getQryFileFieldAnnotation(field);
-                            if(qryFileInputFieldAnnotation != null){
+                            QryFileInputFieldAnnotation qryFileInputFieldAnnotation = getQryFileInputFieldAnnotation(field);
+                            if (qryFileInputFieldAnnotation != null) {
                                 String fieldValue = qryFileInputFieldAnnotation.qryFileCustomField();
                                 log.info("qryFileCustomField Annotation value : " + fieldValue);
                             }
@@ -53,9 +53,9 @@ public class QryFileAnnotationProcessor {
                     Class returnTypeClass = method.getReturnType();
                     Field[] fields = returnTypeClass.getDeclaredFields();
                     for (Field field : fields) {
-                        QryFileInputFieldAnnotation qryFileInputFieldAnnotation = getQryFileFieldAnnotation(field);
-                        if(qryFileInputFieldAnnotation != null){
-                            String fieldValue = qryFileInputFieldAnnotation.qryFileCustomField();
+                        QryFileOutputFieldAnnotation qryFileOutputFieldAnnotation = getQryFileOutputFieldAnnotation(field);
+                        if (qryFileOutputFieldAnnotation != null) {
+                            String fieldValue = qryFileOutputFieldAnnotation.qryFileCustomField();
                             log.info("qryFileCustomField Annotation value : " + fieldValue);
                         }
                     }
@@ -76,14 +76,26 @@ public class QryFileAnnotationProcessor {
         return annotation;
     }
 
-    public QryFileInputFieldAnnotation getQryFileFieldAnnotation(Field field) {
+    public QryFileInputFieldAnnotation getQryFileInputFieldAnnotation(Field field) {
         Annotation[] annotations = field.getAnnotations();
         QryFileInputFieldAnnotation annotation = Arrays.stream(annotations)
                                                        .filter(annotation1 -> annotation1.annotationType()
-                                                                                    .equals(QryFileInputFieldAnnotation.class))
+                                                                                         .equals(QryFileInputFieldAnnotation.class))
                                                        .findFirst()
                                                        .map(annotation1 -> (QryFileInputFieldAnnotation) annotation1)
                                                        .orElse(null);
+
+        return annotation;
+    }
+
+    public QryFileOutputFieldAnnotation getQryFileOutputFieldAnnotation(Field field) {
+        Annotation[] annotations = field.getAnnotations();
+        QryFileOutputFieldAnnotation annotation = Arrays.stream(annotations)
+                                                        .filter(annotation1 -> annotation1.annotationType()
+                                                                                          .equals(QryFileOutputFieldAnnotation.class))
+                                                        .findFirst()
+                                                        .map(annotation1 -> (QryFileOutputFieldAnnotation) annotation1)
+                                                        .orElse(null);
 
         return annotation;
     }
