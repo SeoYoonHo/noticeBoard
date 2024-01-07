@@ -1,10 +1,8 @@
 package com.study.boardExample.config;
 
 import brave.internal.codec.HexCodec;
-import brave.internal.propagation.StringPropagationAdapter;
 import brave.propagation.Propagation;
 import brave.propagation.TraceContext;
-import brave.propagation.TraceContextOrSamplingFlags;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +30,19 @@ class CustomPropagator extends Propagation.Factory implements Propagation<String
                                                                          .spanId(HexCodec.lowerHexToUnsignedLong(getter.get(request, "myCustomSpanId"))).build());
     }
 
+    /**
+     * @deprecated end users and instrumentation should never call this, and instead use
+     * {@link #get()}. This only remains to avoid rev-lock upgrading to Brave 6.
+     */
+    @Deprecated
     @Override
-    public <K> Propagation<K> create(KeyFactory<K> keyFactory) {
-        return StringPropagationAdapter.create(this, keyFactory);
+    public <K> Propagation<K> create(Propagation.KeyFactory<K> ignored) {
+        throw new UnsupportedOperationException("As of Brave 5.12, call PropagationFactory.get()");
+    }
+
+    @Override
+    public Propagation<String> get() {
+        return this;
     }
 
 }
