@@ -1,9 +1,23 @@
+buildscript {
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    dependencies {
+        classpath 'org.example:untitled:1.0-SNAPSHOT'
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
     id 'com.google.cloud.tools.jib' version '3.2.0'
+//    id 'org.example.myplugin'
 }
+
+apply plugin: 'org.example.myplugin'
 
 group = 'com.study'
 version = '0.0.1-SNAPSHOT'
@@ -66,4 +80,12 @@ jib {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// 컴파일러 옵션 설정
+tasks.withType(JavaCompile) {
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.compilerArgs += [
+            '-processor', 'com.study.boardExample.shinhan.MyAnnotationProcessor'
+    ]
 }
