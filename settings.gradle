@@ -1,2 +1,2 @@
 rootProject.name = 'boardExample'
-includeBuild('./libs')
+includeBuild('/Users/seoyoonho/Project/study/customPluginTest')

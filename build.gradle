@@ -1,42 +1,18 @@
-buildscript {
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-    dependencies {
-        classpath 'org.example:untitled:1.0-SNAPSHOT'
-    }
-}
-
 plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
     id 'com.google.cloud.tools.jib' version '3.2.0'
-//    id 'org.example.myplugin'
+    id 'org.example.myplugin'
 }
-
-apply plugin: 'org.example.myplugin'
 
 group = 'com.study'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
 
 repositories {
     mavenCentral()
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.3"
-    }
 }
 
 dependencies {
@@ -48,21 +24,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-//    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    compileOnly 'org.example:untitled:1.0-SNAPSHOT'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.mockito:mockito-core:4.8.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.8.0'
-    testImplementation 'org.mockito:mockito-inline:4.8.0'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 jib {
@@ -80,12 +55,4 @@ jib {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-// 컴파일러 옵션 설정
-tasks.withType(JavaCompile) {
-    options.annotationProcessorPath = configurations.annotationProcessor
-    options.compilerArgs += [
-            '-processor', 'com.study.boardExample.shinhan.MyAnnotationProcessor'
-    ]
 }
