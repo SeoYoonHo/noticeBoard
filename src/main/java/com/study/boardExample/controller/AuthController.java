@@ -3,8 +3,6 @@ package com.study.boardExample.controller;
 import com.study.boardExample.dto.JsonWebTokenDto;
 import com.study.boardExample.dto.MemberDTO;
 import com.study.boardExample.service.AuthService;
-import com.study.boardExample.shinhan.qryfile.QryFileMethodAnnotation;
-import com.study.boardExample.shinhan.swagger.CustomizedOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
@@ -28,7 +26,6 @@ public class AuthController {
     private final RestTemplate restTemplate;
 
     @PostMapping("/login")
-    @QryFileMethodAnnotation(qryFileCustomMethod = "qryFile custom method!!!!")
     public JsonWebTokenDto login(@RequestBody MemberDTO.LoginRequest memberDto) {
         String URL = "http://localhost:9090/api/v1/auth/test";
         restTemplate.getForObject(URL, String.class);
@@ -41,7 +38,6 @@ public class AuthController {
                     @ExtensionProperty(name = "key2", value = "value2"),
             })
     })
-    @CustomizedOperation(addtion = "ddddd", position = "1", length = "2")
     @GetMapping("/test")
     public String test(){
         log.info("test!!!!!!!!!");
