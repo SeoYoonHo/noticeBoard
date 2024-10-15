@@ -1,6 +1,7 @@
 package com.study.boardExample.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -19,5 +20,5 @@ public abstract class Node extends BaseTimeEntity{
     @OneToMany(mappedBy = "targetNode")
     private List<FirewallRequest> targetFirewallRequests;
 
-    // 공통 속성들 추가
+    // 공통 속성들 추가ㄴ
 }

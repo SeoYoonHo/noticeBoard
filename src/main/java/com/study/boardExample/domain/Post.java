@@ -1,10 +1,9 @@
 package com.study.boardExample.domain;
 
 import com.study.boardExample.enums.BoardTypeEnums;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
 
 @Entity
 @Data

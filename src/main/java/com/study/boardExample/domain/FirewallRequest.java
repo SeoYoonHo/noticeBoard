@@ -1,6 +1,7 @@
 package com.study.boardExample.domain;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 
 @Entity
 public class FirewallRequest {
